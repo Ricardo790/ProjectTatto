@@ -1,138 +1,116 @@
 
-import { GoogleGenAI, Type } from "@google/genai";
-
-// 1. Datos de la Galería
-const TATTOOS = [
-  { id: '1', title: 'León Realista', style: 'Realismo', url: 'https://images.unsplash.com/photo-1590246814883-57833e413fa4?q=80&w=1000' },
-  { id: '2', title: 'Daga Clásica', style: 'Tradicional', url: 'https://images.unsplash.com/photo-1611501275019-9b5cda994e8d?q=80&w=1000' },
-  { id: '3', title: 'Geometría Áurea', style: 'Minimalista', url: 'https://images.unsplash.com/photo-1550537687-c91072c4792d?q=80&w=1000' },
-  { id: '4', title: 'Cuervo Blackwork', style: 'Blackwork', url: 'https://images.unsplash.com/photo-1560707303-4e980ce876ad?q=80&w=1000' },
-  { id: '5', title: 'Botánica Fina', style: 'Minimalista', url: 'https://images.unsplash.com/photo-1512413316925-fd4b93f31521?q=80&w=1000' },
+// 1. Datos del Portafolio (Imágenes y Videos)
+const WORKS = [
+  { id: '1', title: 'León Realista', style: 'Realismo', type: 'image', url: 'https://images.unsplash.com/photo-1590246814883-57833e413fa4?q=80&w=1000' },
+  { id: '2', title: 'Daga Clásica', style: 'Tradicional', type: 'image', url: 'https://images.unsplash.com/photo-1611501275019-9b5cda994e8d?q=80&w=1000' },
+  { id: '3', title: 'Proceso de Sombreado', style: 'Videos', type: 'video', url: 'https://www.w3schools.com/html/mov_bbb.mp4' }, // Video de ejemplo
+  { id: '4', title: 'Geometría Áurea', style: 'Realismo', type: 'image', url: 'https://images.unsplash.com/photo-1550537687-c91072c4792d?q=80&w=1000' },
+  { id: '5', title: 'Cuervo Blackwork', style: 'Tradicional', type: 'image', url: 'https://images.unsplash.com/photo-1560707303-4e980ce876ad?q=80&w=1000' },
+  { id: '6', title: 'Time-lapse Sesión', style: 'Videos', type: 'video', url: 'https://www.w3schools.com/html/movie.mp4' }, // Video de ejemplo
 ];
 
-// 2. Renderizar Galería
+// 2. Renderizar Portafolio
 const grid = document.getElementById('tattoo-grid');
 
-function renderGallery(filter = 'Todos') {
-  grid.innerHTML = '';
-  const filtered = filter === 'Todos' ? TATTOOS : TATTOOS.filter(t => t.style === filter);
-  
-  filtered.forEach(t => {
-    const card = document.createElement('div');
-    card.className = 'bg-[#0a0a0a] border border-white/5 overflow-hidden group hover:border-[#c5a059]/30 transition-all';
-    card.innerHTML = `
-      <div class="aspect-square overflow-hidden relative">
-        <img src="${t.url}" class="w-full h-full object-cover group-hover:scale-110 transition-duration-700" alt="${t.title}">
-        <span class="absolute top-4 right-4 bg-black/60 px-3 py-1 text-[8px] font-bold text-[#c5a059] uppercase">${t.style}</span>
-      </div>
-      <div class="p-6">
-        <h4 class="font-serif-bold text-xl text-[#c5a059]">${t.title}</h4>
-        <div class="mt-4 pt-4 border-t border-white/5">
-           <p class="text-[10px] text-zinc-600 uppercase mb-2">Comentarios:</p>
-           <div id="comments-${t.id}" class="space-y-2 max-h-[100px] overflow-y-auto mb-4 text-[11px] italic">
-             <p class="opacity-30">Sin comentarios todavía...</p>
-           </div>
-           <div class="flex gap-2">
-             <input type="text" id="input-${t.id}" placeholder="Tu opinión..." class="flex-1 bg-transparent border-b border-white/10 text-[10px] outline-none">
-             <button onclick="window.addComment('${t.id}')" class="text-[10px] font-bold uppercase text-[#c5a059]">Post</button>
-           </div>
-        </div>
-      </div>
-    `;
-    grid.appendChild(card);
-  });
+function renderWorks(filter = 'Todos') {
+    // Animación de salida antes de limpiar
+    grid.style.opacity = '0';
+    
+    setTimeout(() => {
+        grid.innerHTML = '';
+        const filtered = filter === 'Todos' ? WORKS : WORKS.filter(w => w.style === filter);
+        
+        filtered.forEach((w, index) => {
+            const card = document.createElement('div');
+            card.className = 'tattoo-card bg-[#0a0a0a] border border-white/5 overflow-hidden group reveal';
+            card.style.transitionDelay = `${index * 100}ms`;
+
+            const mediaHTML = w.type === 'video' 
+                ? `<video src="${w.url}" class="w-full h-full object-cover group-hover:scale-110 transition-all duration-700" loop muted onmouseover="this.play()" onmouseout="this.pause()"></video>`
+                : `<img src="${w.url}" class="w-full h-full object-cover group-hover:scale-110 transition-all duration-700" alt="${w.title}">`;
+
+            card.innerHTML = `
+                <div class="aspect-[4/5] overflow-hidden relative">
+                    ${mediaHTML}
+                    <span class="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1 text-[8px] font-bold text-[#c5a059] uppercase tracking-widest">${w.style}</span>
+                </div>
+                <div class="p-8">
+                    <h4 class="font-serif-bold text-xl text-[#c5a059] mb-4">${w.title}</h4>
+                    <div class="pt-4 border-t border-white/5">
+                        <div id="comments-${w.id}" class="space-y-3 max-h-[120px] overflow-y-auto mb-6 custom-scrollbar pr-2">
+                            <p class="text-[10px] opacity-20 italic">No hay comentarios aún...</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <input type="text" id="input-${w.id}" placeholder="Escribe un comentario..." class="flex-1 bg-transparent border-b border-white/10 text-[10px] outline-none py-2 focus:border-[#c5a059] transition-all">
+                            <button onclick="window.postComment('${w.id}')" class="text-[9px] font-bold uppercase text-[#c5a059] hover:text-white transition-all">Publicar</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+        
+        // Animación de entrada
+        grid.style.opacity = '1';
+        handleScrollReveal(); // Re-ejecutar observador
+    }, 300);
 }
 
-// 3. Comentarios (Locales por ahora para simplicidad)
-window.addComment = (id) => {
+// 3. Sistema de Comentarios
+window.postComment = (id) => {
     const input = document.getElementById(`input-${id}`);
     const box = document.getElementById(`comments-${id}`);
-    if (!input.value.trim()) return;
+    const text = input.value.trim();
     
-    if (box.querySelector('.opacity-30')) box.innerHTML = '';
-    const p = document.createElement('p');
-    p.className = 'text-zinc-400';
-    p.textContent = `• "${input.value}"`;
-    box.appendChild(p);
+    if (!text) return;
+
+    if (box.querySelector('.opacity-20')) box.innerHTML = '';
+    
+    const div = document.createElement('div');
+    div.className = 'animate-in fade-in slide-in-from-bottom-1 duration-500';
+    div.innerHTML = `<p class="text-[11px] text-zinc-400 italic">"${text}"</p>`;
+    
+    box.appendChild(div);
     input.value = '';
+    box.scrollTop = box.scrollHeight;
 };
 
-// 4. Filtros
+// 4. Filtros con Animación
 document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.onclick = () => {
-        document.querySelectorAll('.filter-btn').forEach(b => b.className = 'filter-btn border border-white/10 text-zinc-500 px-6 py-2 text-[10px] font-bold uppercase tracking-widest');
-        btn.className = 'filter-btn bg-[#c5a059] text-black px-6 py-2 text-[10px] font-bold uppercase tracking-widest';
-        renderGallery(btn.dataset.filter);
+        document.querySelectorAll('.filter-btn').forEach(b => {
+            b.className = 'filter-btn border border-white/5 text-zinc-500 px-6 py-2 text-[9px] font-bold uppercase tracking-widest hover:text-white transition-all';
+        });
+        btn.className = 'filter-btn bg-[#c5a059] text-black px-6 py-2 text-[9px] font-bold uppercase tracking-widest transition-all';
+        renderWorks(btn.dataset.filter);
     };
 });
 
-// 5. Consultor IA (Gemini)
-const btnAi = document.getElementById('btn-ai');
-const aiInput = document.getElementById('ai-input');
-const aiResult = document.getElementById('ai-result');
-
-btnAi.onclick = async () => {
-    const prompt = aiInput.value.trim();
-    if (!prompt) return;
-
-    btnAi.textContent = 'PROCESANDO_DATOS...';
-    btnAi.disabled = true;
-
-    try {
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-        const response = await ai.models.generateContent({
-            model: "gemini-3-flash-preview",
-            contents: `Eres un experto tatuador. Sugiere un concepto basado en: "${prompt}". Responde solo en JSON.`,
-            config: {
-                responseMimeType: "application/json",
-                responseSchema: {
-                    type: Type.OBJECT,
-                    properties: {
-                        title: { type: Type.STRING },
-                        description: { type: Type.STRING },
-                    },
-                    required: ["title", "description"]
-                },
-            },
-        });
-
-        const data = JSON.parse(response.text);
-        document.getElementById('ai-title').textContent = data.title;
-        document.getElementById('ai-desc').textContent = data.description;
-        aiResult.classList.remove('hidden');
-
-        // Generar Imagen
-        const imgResponse = await ai.models.generateContent({
-            model: 'gemini-2.5-flash-image',
-            contents: { parts: [{ text: `A professional black and gray tattoo sketch: ${data.title}` }] },
-        });
-
-        for (const part of imgResponse.candidates[0].content.parts) {
-            if (part.inlineData) {
-                document.getElementById('sketch-img').src = `data:image/png;base64,${part.inlineData.data}`;
-                document.getElementById('sketch-img').classList.remove('hidden');
-                document.getElementById('sketch-loading').classList.add('hidden');
+// 5. Animación de Scroll Reveal
+function handleScrollReveal() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
             }
-        }
+        });
+    }, { threshold: 0.1 });
 
-    } catch (e) {
-        console.error(e);
-        alert("Configura tu API_KEY en Netlify para usar la IA.");
-    } finally {
-        btnAi.textContent = 'Generar Propuesta';
-        btnAi.disabled = false;
-    }
-};
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}
 
-// 6. WhatsApp Form
+// 6. WhatsApp
 document.getElementById('contact-form').onsubmit = (e) => {
     e.preventDefault();
     const name = document.getElementById('form-name').value;
     const style = document.getElementById('form-style').value;
     const desc = document.getElementById('form-desc').value;
-    const msg = `Hola Arte & Tinta, soy ${name}. Me interesa un tatuaje estilo ${style}: ${desc}`;
+    const msg = `Hola Arte & Tinta, soy ${name}. Quiero un tatuaje ${style}: ${desc}`;
     window.open(`https://wa.me/34600000000?text=${encodeURIComponent(msg)}`, '_blank');
 };
 
-// Inicio
-renderGallery();
+// Inicializar
+document.addEventListener('DOMContentLoaded', () => {
+    renderWorks();
+    handleScrollReveal();
+});

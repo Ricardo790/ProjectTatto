@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arte & Tinta | Estudio de Tatuajes Clásico</title>
+    <title>Arte & Tinta | Estudio de Tatuajes</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Lora:ital,wght@0,400;0,600;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -19,31 +19,58 @@
             font-family: 'Lora', serif;
             background-color: var(--bg-dark);
             color: var(--text-cream);
+            overflow-x: hidden;
         }
         .font-serif-bold { font-family: 'Playfair Display', serif; font-weight: 900; }
         .font-tech { font-family: 'Space Mono', monospace; }
+        
+        /* Animaciones */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
         .btn-wine {
             background-color: var(--wine);
             color: white;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             border: 1px solid var(--wine-light);
         }
         .btn-wine:hover {
             background-color: var(--wine-light);
-            transform: translateY(-2px);
+            transform: scale(1.02);
+            box-shadow: 0 10px 20px -10px var(--wine);
         }
-        .reveal {
-          opacity: 0;
-          transform: translateY(20px);
-          transition: all 0.6s ease-out;
-        }
-        .reveal.active {
-          opacity: 1;
-          transform: translateY(0);
-        }
+
         .nav-link { position: relative; transition: color 0.3s ease; }
-        .nav-link::after { content: ''; position: absolute; width: 0; height: 1px; bottom: -2px; left: 0; background-color: var(--gold); transition: width 0.3s ease; }
+        .nav-link::after { 
+            content: ''; 
+            position: absolute; 
+            width: 0; 
+            height: 1px; 
+            bottom: -2px; 
+            left: 0; 
+            background-color: var(--gold); 
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
         .nav-link:hover::after { width: 100%; }
+
+        /* Estilo para el Grid de Tatuajes */
+        .tattoo-card {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .tattoo-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--gold);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 3px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--gold); }
     </style>
 <script type="importmap">
 {
@@ -62,112 +89,89 @@
 <body class="selection:bg-[#c5a059] selection:text-black">
 
     <!-- Navegación -->
-    <nav class="fixed top-0 left-0 w-full z-50 bg-[#0a0a0a]/95 border-b border-[#c5a059]/20 px-6 py-4 backdrop-blur-sm">
+    <nav class="fixed top-0 left-0 w-full z-50 bg-[#0a0a0a]/90 border-b border-[#c5a059]/10 px-6 py-5 backdrop-blur-md">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="flex flex-col items-center md:items-start">
                 <h1 class="font-serif-bold text-2xl tracking-tight text-[#c5a059]">ARTE & TINTA</h1>
-                <span class="text-[10px] uppercase tracking-[0.3em] opacity-60">Estudio de Tatuajes Clásico</span>
+                <span class="text-[9px] uppercase tracking-[0.4em] opacity-40">Tattoo Studio</span>
             </div>
             <div class="flex flex-wrap justify-center gap-8 font-serif-bold text-[10px] uppercase tracking-widest">
-                <a href="#inicio" class="nav-link text-white/80 hover:text-[#c5a059]">Inicio</a>
-                <a href="#ai-consultant" class="nav-link text-white/80 hover:text-[#c5a059]">IA_Consultor</a>
-                <a href="#galeria" class="nav-link text-white/80 hover:text-[#c5a059]">Galería</a>
-                <a href="#contacto" class="nav-link text-white/80 hover:text-[#c5a059]">Contacto</a>
+                <a href="#inicio" class="nav-link text-white/70 hover:text-[#c5a059]">Inicio</a>
+                <a href="#galeria" class="nav-link text-white/70 hover:text-[#c5a059]">Portafolio</a>
+                <a href="#contacto" class="nav-link text-white/70 hover:text-[#c5a059]">Contacto</a>
             </div>
         </div>
     </nav>
 
     <!-- Hero -->
     <header id="inicio" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
-        <div class="absolute inset-0 z-0">
-            <img src="https://images.unsplash.com/photo-1598371839696-5c5bb00bdc28?q=80&w=2000" alt="Studio" class="w-full h-full object-cover opacity-30 grayscale">
+        <div class="absolute inset-0 z-0 scale-110 animate-[pulse_15s_infinite]">
+            <img src="https://images.unsplash.com/photo-1598371839696-5c5bb00bdc28?q=80&w=2000" alt="Studio" class="w-full h-full object-cover opacity-20 grayscale">
             <div class="absolute inset-0 bg-gradient-to-b from-[#0f0f0f] via-transparent to-[#0f0f0f]"></div>
         </div>
         <div class="relative z-10 text-center max-w-4xl px-6">
-            <h2 class="text-6xl md:text-9xl font-serif-bold leading-[0.9] mb-10 italic reveal">El Arte de la <br /><span class="text-[#c5a059] not-italic">Piel.</span></h2>
-            <p class="text-lg md:text-2xl font-light italic text-zinc-400 mb-12 reveal">Líneas eternas y conceptos únicos. Especialistas en realismo y trazo fino.</p>
-            <div class="flex flex-col sm:flex-row gap-6 justify-center reveal">
-                <a href="#galeria" class="btn-wine px-14 py-5 font-serif-bold tracking-[0.3em] uppercase text-xs">Ver Galería</a>
-                <a href="#contacto" class="border border-[#c5a059]/40 px-14 py-5 font-serif-bold tracking-[0.3em] uppercase text-xs text-white">Agendar Cita</a>
+            <h2 class="text-6xl md:text-8xl font-serif-bold leading-tight mb-8 italic reveal">Marcas que <br /><span class="text-[#c5a059] not-italic">Trascienden.</span></h2>
+            <p class="text-lg md:text-xl font-light italic text-zinc-500 mb-12 reveal" style="transition-delay: 200ms;">Donde cada trazo es una pieza de arte eterna. Especialistas en realismo y trazo fino.</p>
+            <div class="flex flex-col sm:flex-row gap-6 justify-center reveal" style="transition-delay: 400ms;">
+                <a href="#galeria" class="btn-wine px-12 py-5 font-serif-bold tracking-[0.3em] uppercase text-[10px]">Explorar Galería</a>
+                <a href="#contacto" class="border border-[#c5a059]/30 px-12 py-5 font-serif-bold tracking-[0.3em] uppercase text-[10px] text-white hover:bg-[#c5a059]/10 transition-all">Pedir Cita</a>
             </div>
         </div>
     </header>
 
     <main class="max-w-7xl mx-auto px-6">
         
-        <!-- Consultor IA -->
-        <section id="ai-consultant" class="py-40 border-x border-white/5">
-            <div class="bg-[#0c0c0c] border border-white/5 p-12 lg:p-20 reveal">
-                <h2 class="text-5xl font-tech font-bold mb-12 uppercase">Consultor IA_</h2>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-20">
-                    <div class="space-y-8">
-                        <p class="text-zinc-500 font-light">Describe tu idea y nuestra IA generará una propuesta técnica y un boceto conceptual.</p>
-                        <textarea id="ai-input" class="w-full bg-transparent border border-white/10 p-6 outline-none font-tech text-lg min-h-[150px] placeholder-zinc-800" placeholder="Ej: Un lobo con geometría en el antebrazo..."></textarea>
-                        <button id="btn-ai" class="w-full py-5 bg-white text-black font-bold uppercase font-tech tracking-widest hover:invert transition-all">Generar Propuesta</button>
-                    </div>
-                    <div id="ai-result" class="border border-white/5 p-8 bg-[#080808] hidden space-y-6">
-                        <h3 id="ai-title" class="text-2xl font-bold font-tech text-[#c5a059]"></h3>
-                        <p id="ai-desc" class="text-sm italic text-zinc-400"></p>
-                        <div id="ai-sketch" class="aspect-square bg-black border border-white/5 flex items-center justify-center">
-                            <img id="sketch-img" src="" class="w-full h-full object-contain hidden" alt="Boceto IA">
-                            <span id="sketch-loading" class="text-[10px] font-tech animate-pulse">GENERANDO_SKETCH...</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- Galería -->
-        <section id="galeria" class="py-40">
+        <section id="galeria" class="py-32">
             <div class="text-center mb-24 reveal">
-                <h2 class="font-serif-bold text-6xl italic mb-4">Galería de Trabajos</h2>
-                <div class="w-24 h-[1px] bg-[#c5a059] mx-auto mb-12"></div>
-                <div id="filter-buttons" class="flex flex-wrap justify-center gap-4">
-                    <button class="filter-btn bg-[#c5a059] text-black px-6 py-2 text-[10px] font-bold uppercase tracking-widest" data-filter="Todos">Todos</button>
-                    <button class="filter-btn border border-white/10 text-zinc-500 px-6 py-2 text-[10px] font-bold uppercase tracking-widest hover:text-white" data-filter="Realismo">Realismo</button>
-                    <button class="filter-btn border border-white/10 text-zinc-500 px-6 py-2 text-[10px] font-bold uppercase tracking-widest hover:text-white" data-filter="Tradicional">Tradicional</button>
-                    <button class="filter-btn border border-white/10 text-zinc-500 px-6 py-2 text-[10px] font-bold uppercase tracking-widest hover:text-white" data-filter="Minimalista">Minimalista</button>
+                <h2 class="font-serif-bold text-5xl italic mb-6">Nuestros Trabajos</h2>
+                <div class="w-16 h-[1px] bg-[#c5a059] mx-auto mb-10"></div>
+                
+                <!-- Filtros -->
+                <div id="filter-buttons" class="flex flex-wrap justify-center gap-3">
+                    <button class="filter-btn bg-[#c5a059] text-black px-6 py-2 text-[9px] font-bold uppercase tracking-widest transition-all" data-filter="Todos">Todos</button>
+                    <button class="filter-btn border border-white/5 text-zinc-500 px-6 py-2 text-[9px] font-bold uppercase tracking-widest hover:text-white transition-all" data-filter="Realismo">Realismo</button>
+                    <button class="filter-btn border border-white/5 text-zinc-500 px-6 py-2 text-[9px] font-bold uppercase tracking-widest hover:text-white transition-all" data-filter="Tradicional">Tradicional</button>
+                    <button class="filter-btn border border-white/5 text-zinc-500 px-6 py-2 text-[9px] font-bold uppercase tracking-widest hover:text-white transition-all" data-filter="Videos">Videos</button>
                 </div>
             </div>
-            <div id="tattoo-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Se llena con JS -->
+
+            <!-- Grid de Tatuajes -->
+            <div id="tattoo-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <!-- Se llena dinámicamente con index.js -->
             </div>
         </section>
 
-        <!-- Sección de Contacto -->
-        <section id="contacto" class="py-40 bg-[#0a0a0a]">
-            <div class="max-w-3xl mx-auto border border-[#c5a059]/20 p-12 reveal">
-                <h2 class="font-serif-bold text-5xl text-center mb-12 italic">Agendar Cita</h2>
-                <form id="contact-form" class="space-y-8">
-                    <input type="text" id="form-name" placeholder="Tu Nombre" class="w-full bg-transparent border-b border-white/10 p-3 outline-none focus:border-[#c5a059] transition-all">
-                    <select id="form-style" class="w-full bg-[#0f0f0f] border-b border-white/10 p-3 outline-none">
-                        <option>Realismo</option>
-                        <option>Tradicional</option>
-                        <option>Minimalista</option>
-                    </select>
-                    <textarea id="form-desc" placeholder="Háblanos de tu idea..." class="w-full bg-transparent border-b border-white/10 p-3 outline-none focus:border-[#c5a059] transition-all min-h-[100px]"></textarea>
-                    <button type="submit" class="w-full btn-wine py-5 font-serif-bold uppercase tracking-widest">Enviar por WhatsApp</button>
+        <!-- Contacto -->
+        <section id="contacto" class="py-32">
+            <div class="max-w-3xl mx-auto bg-[#0a0a0a] border border-white/5 p-12 md:p-20 reveal">
+                <div class="text-center mb-16">
+                    <h2 class="font-serif-bold text-4xl mb-4 italic">Cuéntanos tu idea</h2>
+                    <p class="text-[9px] uppercase tracking-[0.4em] text-[#c5a059]">Reserva tu espacio</p>
+                </div>
+                
+                <form id="contact-form" class="space-y-10">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                        <input type="text" id="form-name" placeholder="Tu Nombre" class="bg-transparent border-b border-white/10 p-3 outline-none focus:border-[#c5a059] transition-all w-full text-sm italic" required>
+                        <select id="form-style" class="bg-[#0f0f0f] border-b border-white/10 p-3 outline-none w-full text-sm italic">
+                            <option>Realismo</option>
+                            <option>Tradicional</option>
+                            <option>Minimalista</option>
+                        </select>
+                    </div>
+                    <textarea id="form-desc" placeholder="Describe tu proyecto..." class="bg-transparent border-b border-white/10 p-3 outline-none focus:border-[#c5a059] transition-all w-full min-h-[120px] text-sm italic" required></textarea>
+                    <button type="submit" class="w-full btn-wine py-5 font-serif-bold uppercase tracking-[0.4em] text-[10px]">Enviar por WhatsApp</button>
                 </form>
             </div>
         </section>
 
     </main>
 
-    <footer class="py-20 border-t border-white/5 bg-[#0a0a0a] text-center">
-        <h3 class="font-serif-bold text-3xl text-[#c5a059] italic mb-8">Arte & Tinta</h3>
-        <p class="text-[10px] uppercase tracking-[0.5em] opacity-30">© 2024 Arte & Tinta Studio | Calle de la Tinta 42, Madrid</p>
+    <footer class="py-20 border-t border-white/5 text-center bg-[#080808]">
+        <h3 class="font-serif-bold text-2xl text-[#c5a059] italic mb-6">Arte & Tinta</h3>
+        <p class="text-[9px] uppercase tracking-[0.6em] opacity-30">© 2024 Madrid, España | Arte Eterno</p>
     </footer>
 
     <script type="module" src="index.js"></script>
-    <script>
-        // Animación de scroll simple
-        function handleReveal() {
-            document.querySelectorAll('.reveal').forEach(el => {
-                if (el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('active');
-            });
-        }
-        window.addEventListener('scroll', handleReveal);
-        window.addEventListener('load', handleReveal);
-    </script>
 </body>
 </html>
