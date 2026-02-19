@@ -22,9 +22,8 @@
             line-height: 1.6;
             margin: 0;
         }
-        /* Fallback: si React no carga, al menos mostramos un mensaje */
         #root:empty::before {
-            content: 'Cargando aplicación...';
+            content: 'Iniciando sistema...';
             display: flex;
             justify-content: center;
             align-items: center;
@@ -64,22 +63,21 @@
 <script type="importmap">
 {
   "imports": {
-    "react": "https://esm.sh/react@19.2.4",
-    "react-dom": "https://esm.sh/react-dom@19.2.4",
-    "react-dom/client": "https://esm.sh/react-dom@19.2.4/client",
-    "@google/genai": "https://esm.sh/@google/genai@1.41.0",
-    "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@2",
+    "react": "https://esm.sh/react@^19.2.4",
     "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "react/": "https://esm.sh/react@^19.2.4/"
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.41.0",
+    "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@^2.97.0",
+    "vite": "https://esm.sh/vite@^7.3.1",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.4"
   }
 }
 </script>
 </head>
 <body>
     <div id="root"></div>
-    <!-- Usamos .js en lugar de .tsx para entornos de producción estáticos si no hay build step, 
-         pero el estándar de este proyecto asume que un bundler lo maneja. -->
-    <script type="module" src="index.tsx"></script>
+    <!-- Vite se encarga de procesar este index.tsx automáticamente -->
+    <script type="module" src="/index.tsx"></script>
     
     <script>
       function handleReveal() {
@@ -96,7 +94,6 @@
       window.addEventListener('load', handleReveal);
       const observer = new MutationObserver(() => handleReveal());
       observer.observe(document.body, { childList: true, subtree: true });
-      // Forzar visibilidad después de 3 segundos por si algo falla
       setTimeout(() => {
         document.querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
       }, 3000);
