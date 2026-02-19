@@ -20,6 +20,7 @@
             background-color: var(--bg-dark);
             color: var(--text-cream);
             line-height: 1.6;
+            margin: 0;
         }
         .font-serif-bold {
             font-family: 'Playfair Display', serif;
@@ -78,14 +79,23 @@
         ::-webkit-scrollbar-thumb {
             background: var(--wine);
         }
+        /* Elementos ocultos por defecto para la animación */
         .reveal {
           opacity: 0;
-          transform: translateY(30px);
-          transition: all 0.8s ease-out;
+          transform: translateY(20px);
+          transition: all 0.6s ease-out;
         }
+        /* Clase que activa la visibilidad */
         .reveal.active {
           opacity: 1;
           transform: translateY(0);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: var(--gold);
+          border-radius: 10px;
         }
     </style>
 <script type="importmap">
@@ -94,7 +104,8 @@
     "react/": "https://esm.sh/react@^19.2.4/",
     "react": "https://esm.sh/react@^19.2.4",
     "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "@google/genai": "https://esm.sh/@google/genai@^1.41.0"
+    "@google/genai": "https://esm.sh/@google/genai@^1.41.0",
+    "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@2"
   }
 }
 </script>
@@ -102,17 +113,34 @@
 <body>
     <div id="root"></div>
     <script>
-      // Simple scroll observer para animaciones
-      window.addEventListener('scroll', () => {
+      // Función mejorada para activar animaciones
+      function handleReveal() {
         const reveals = document.querySelectorAll('.reveal');
         reveals.forEach(reveal => {
           const windowHeight = window.innerHeight;
           const revealTop = reveal.getBoundingClientRect().top;
-          if (revealTop < windowHeight - 100) {
+          const revealPoint = 50; // margen para activar
+
+          if (revealTop < windowHeight - revealPoint) {
             reveal.classList.add('active');
           }
         });
+      }
+
+      // Eventos de activación
+      window.addEventListener('scroll', handleReveal);
+      window.addEventListener('load', handleReveal);
+      
+      // Observador para detectar cambios en el DOM (importante para React)
+      const observer = new MutationObserver(() => {
+        handleReveal();
       });
+      observer.observe(document.body, { childList: true, subtree: true });
+
+      // Ejecución inicial forzada
+      handleReveal();
+      // Pequeño retraso extra por si el renderizado de React es lento
+      setTimeout(handleReveal, 500);
     </script>
 </body>
 </html>
