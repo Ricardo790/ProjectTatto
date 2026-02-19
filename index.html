@@ -4,56 +4,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marcos Tattoo | Studio & Social Feed</title>
+    <title>Arte & Tinta | Estudio de Tatuajes Profesional</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Lora:ital,wght@0,400;0,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #c5a059;
             --wine: #4a0e0e;
-            --bg: #0a0a0a;
+            --bg: #0f0f0f;
+            --text: #e5e1d8;
         }
         body {
             font-family: 'Lora', serif;
             background-color: var(--bg);
-            color: #e5e1d8;
+            color: var(--text);
             overflow-x: hidden;
         }
-        .font-serif-bold { font-family: 'Playfair Display', serif; font-weight: 900; }
-        .font-tech { font-family: 'Space Mono', monospace; }
+        .font-serif-bold { font-family: 'Playfair Display', serif; font-weight: 700; }
+        .font-mono { font-family: 'Space Mono', monospace; }
 
-        /* Animaciones de entrada */
+        /* Animación de Revelado */
         .reveal {
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+            transform: translateY(30px);
+            transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
         }
         .reveal.active {
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* Efecto Story */
-        .story-ring {
-            padding: 2px;
-            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-            border-radius: 50%;
+        /* Botón Wine */
+        .btn-wine {
+            background-color: var(--wine);
+            color: white;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(197, 160, 89, 0.2);
         }
-        .story-item:hover img { transform: scale(1.1); }
-        
-        /* Botón Like */
-        .like-btn.active svg { fill: #ff3040; stroke: #ff3040; transform: scale(1.2); }
-        .like-btn svg { transition: all 0.3s ease; }
+        .btn-wine:hover {
+            background-color: #5e1212;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #000; }
+        /* Galería Hover */
+        .gallery-item img {
+            transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Scrollbar Personalizada */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: var(--gold); }
 
-        .glass-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        .ornament {
+            width: 100px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
         }
     </style>
 <script type="importmap">
@@ -73,118 +83,120 @@
 <body class="selection:bg-[#c5a059] selection:text-black">
 
     <!-- Navegación -->
-    <nav class="fixed top-0 left-0 w-full z-50 bg-black/80 border-b border-white/5 px-6 py-4 backdrop-blur-md">
-        <div class="max-w-5xl mx-auto flex justify-between items-center">
-            <h1 class="font-serif-bold text-xl tracking-tighter text-[#c5a059]">MARCOS_TATTOO</h1>
-            <div class="hidden md:flex gap-8 font-tech text-[10px] uppercase tracking-widest">
-                <a href="#feed" class="hover:text-[#c5a059] transition-colors">Feed</a>
-                <a href="#contacto" class="hover:text-[#c5a059] transition-colors">Cita</a>
+    <nav class="fixed top-0 left-0 w-full z-50 bg-[#0f0f0f]/90 border-b border-[#c5a059]/10 px-6 py-5 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex flex-col">
+                <span class="font-serif-bold text-xl tracking-tight text-[#c5a059]">ARTE & TINTA</span>
+                <span class="text-[8px] uppercase tracking-[0.4em] opacity-40">Tattoo Boutique</span>
             </div>
-            <a href="#contacto" class="bg-[#c5a059] text-black px-4 py-1.5 rounded font-bold text-[10px] uppercase">Agendar</a>
+            <div class="hidden md:flex gap-10 font-serif-bold text-[10px] uppercase tracking-widest">
+                <a href="#inicio" class="hover:text-[#c5a059] transition-colors">Inicio</a>
+                <a href="#portafolio" class="hover:text-[#c5a059] transition-colors">Portafolio</a>
+                <a href="#contacto" class="hover:text-[#c5a059] transition-colors">Citas</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="#contacto" class="btn-wine px-5 py-2 text-[10px] uppercase font-bold tracking-widest">Reservar</a>
+            </div>
         </div>
     </nav>
 
-    <main class="max-w-5xl mx-auto px-6 pt-32">
+    <!-- Hero Section -->
+    <header id="inicio" class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1598371839696-5c5bb00bdc28?q=80&w=2000" class="w-full h-full object-cover opacity-20 grayscale scale-110">
+            <div class="absolute inset-0 bg-gradient-to-b from-[#0f0f0f] via-transparent to-[#0f0f0f]"></div>
+        </div>
+        <div class="relative z-10 text-center px-6">
+            <div class="flex justify-center items-center gap-4 mb-6 reveal">
+                <div class="ornament"></div>
+                <span class="text-[10px] uppercase tracking-[0.6em] text-[#c5a059] font-bold">Desde 2012</span>
+                <div class="ornament"></div>
+            </div>
+            <h1 class="text-6xl md:text-9xl font-serif-bold leading-none mb-8 italic reveal" style="transition-delay: 200ms;">
+                Inmortaliza tu <br><span class="text-[#c5a059] not-italic">Historia.</span>
+            </h1>
+            <p class="text-lg md:text-xl font-light italic text-zinc-400 max-w-2xl mx-auto mb-12 reveal" style="transition-delay: 400ms;">
+                Especialistas en realismo, trazo fino y geometría. Un espacio donde el arte y la piel se fusionan para siempre.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-6 justify-center reveal" style="transition-delay: 600ms;">
+                <a href="#portafolio" class="btn-wine px-10 py-4 uppercase text-[10px] font-bold tracking-[0.3em]">Explorar Galería</a>
+                <a href="#contacto" class="border border-[#c5a059]/40 px-10 py-4 uppercase text-[10px] font-bold tracking-[0.3em] hover:bg-[#c5a059]/10 transition-all">Consultar Cita</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6">
         
-        <!-- Perfil Social -->
-        <section class="mb-16 reveal">
-            <div class="flex flex-col md:flex-row items-center gap-10 md:gap-16">
-                <div class="relative group">
-                    <div class="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-2 border-white/10 p-1">
-                        <img src="https://images.unsplash.com/photo-1562159278-1253a58da141?q=80&w=500" class="w-full h-full object-cover rounded-full group-hover:scale-105 transition-transform duration-700" alt="Artista">
-                    </div>
-                    <div class="absolute bottom-1 right-1 bg-blue-500 p-1 rounded-full border-4 border-[#0a0a0a]">
-                        <svg width="14" height="14" fill="white" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
-                    </div>
+        <!-- Portafolio / Galería -->
+        <section id="portafolio" class="py-32">
+            <div class="text-center mb-24 reveal">
+                <h2 class="font-serif-bold text-5xl italic mb-4">El Archivo</h2>
+                <div class="w-20 h-[1px] bg-[#c5a059] mx-auto mb-10"></div>
+                
+                <!-- Filtros -->
+                <div class="flex flex-wrap justify-center gap-4 mb-16">
+                    <button onclick="filterGallery('Todos')" class="filter-btn active px-6 py-2 text-[9px] uppercase tracking-widest border border-[#c5a059] bg-[#c5a059] text-black font-bold transition-all">Todos</button>
+                    <button onclick="filterGallery('Realismo')" class="filter-btn px-6 py-2 text-[9px] uppercase tracking-widest border border-white/10 hover:border-[#c5a059] transition-all">Realismo</button>
+                    <button onclick="filterGallery('Tradicional')" class="filter-btn px-6 py-2 text-[9px] uppercase tracking-widest border border-white/10 hover:border-[#c5a059] transition-all">Tradicional</button>
+                    <button onclick="filterGallery('Minimalista')" class="filter-btn px-6 py-2 text-[9px] uppercase tracking-widest border border-white/10 hover:border-[#c5a059] transition-all">Fine Line</button>
+                </div>
+            </div>
+
+            <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Se llena dinámicamente -->
+            </div>
+        </section>
+
+        <!-- Sección de Contacto y Citas -->
+        <section id="contacto" class="py-32 border-t border-white/5">
+            <div class="max-w-4xl mx-auto bg-[#0a0a0a] border border-[#c5a059]/10 p-10 md:p-20 rounded-sm reveal">
+                <div class="text-center mb-16">
+                    <h2 class="font-serif-bold text-4xl italic mb-4">Agenda tu sesión</h2>
+                    <p class="text-[10px] uppercase tracking-[0.4em] text-[#c5a059]">Recibe una cotización personalizada vía WhatsApp</p>
                 </div>
                 
-                <div class="flex-1 text-center md:text-left">
-                    <div class="flex flex-col md:flex-row md:items-center gap-4 mb-6">
-                        <h2 class="text-3xl font-serif-bold">marcos_ink_studio</h2>
-                        <div class="flex gap-2 justify-center">
-                            <button class="bg-[#c5a059] text-black px-6 py-1.5 rounded-lg text-sm font-bold">Seguir</button>
-                            <button class="bg-zinc-800 text-white px-6 py-1.5 rounded-lg text-sm font-bold">Mensaje</button>
+                <form id="appointment-form" class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div class="space-y-8">
+                        <div>
+                            <label class="block text-[9px] uppercase tracking-widest text-zinc-500 mb-2">Nombre</label>
+                            <input type="text" id="form-name" placeholder="Tu nombre completo" class="w-full bg-transparent border-b border-white/10 py-3 outline-none focus:border-[#c5a059] transition-colors italic" required>
+                        </div>
+                        <div>
+                            <label class="block text-[9px] uppercase tracking-widest text-zinc-500 mb-2">Estilo</label>
+                            <select id="form-style" class="w-full bg-[#0a0a0a] border-b border-white/10 py-3 outline-none focus:border-[#c5a059] transition-colors italic">
+                                <option>Realismo</option>
+                                <option>Tradicional</option>
+                                <option>Fine Line</option>
+                                <option>Geométrico</option>
+                            </select>
                         </div>
                     </div>
-                    <div class="flex justify-center md:justify-start gap-8 mb-6 font-tech text-sm">
-                        <span><strong>248</strong> posts</span>
-                        <span><strong>15.2k</strong> seguidores</span>
-                        <span><strong>1.2k</strong> seguidos</span>
+                    <div class="space-y-8">
+                        <div>
+                            <label class="block text-[9px] uppercase tracking-widest text-zinc-500 mb-2">Idea del tatuaje</label>
+                            <textarea id="form-idea" placeholder="Cuéntanos brevemente tu idea..." class="w-full bg-transparent border border-white/10 p-4 outline-none focus:border-[#c5a059] transition-colors italic min-h-[140px]" required></textarea>
+                        </div>
                     </div>
-                    <div>
-                        <p class="font-bold">Marcos Rodriguez</p>
-                        <p class="text-zinc-400 text-sm italic">Especialista en Realismo y Fine Line ✨<br>Madrid, España 📍<br>Cicatrización garantizada.</p>
-                        <a href="#" class="text-blue-400 text-xs font-bold mt-2 inline-block">linktr.ee/marcostattoo</a>
+                    <div class="md:col-span-2 pt-6">
+                        <button type="submit" class="w-full btn-wine py-5 font-bold uppercase tracking-[0.5em] text-[10px]">Solicitar Disponibilidad</button>
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Stories / Highlights -->
-        <section class="flex gap-6 overflow-x-auto pb-8 mb-12 no-scrollbar reveal" style="transition-delay: 200ms;">
-            <div class="story-item flex flex-col items-center gap-2 cursor-pointer shrink-0" onclick="filterFeed('Todos')">
-                <div class="story-ring w-16 h-16"><img src="https://images.unsplash.com/photo-1598371839696-5c5bb00bdc28?q=80&w=200" class="w-full h-full object-cover rounded-full border-2 border-black"></div>
-                <span class="text-[9px] font-bold uppercase tracking-widest opacity-60">Todos</span>
-            </div>
-            <div class="story-item flex flex-col items-center gap-2 cursor-pointer shrink-0" onclick="filterFeed('Realismo')">
-                <div class="story-ring w-16 h-16"><img src="https://images.unsplash.com/photo-1590246814883-57833e413fa4?q=80&w=200" class="w-full h-full object-cover rounded-full border-2 border-black"></div>
-                <span class="text-[9px] font-bold uppercase tracking-widest opacity-60">Realismo</span>
-            </div>
-            <div class="story-item flex flex-col items-center gap-2 cursor-pointer shrink-0" onclick="filterFeed('Minimalista')">
-                <div class="story-ring w-16 h-16"><img src="https://images.unsplash.com/photo-1550537687-c91072c4792d?q=80&w=200" class="w-full h-full object-cover rounded-full border-2 border-black"></div>
-                <span class="text-[9px] font-bold uppercase tracking-widest opacity-60">FineLine</span>
-            </div>
-            <div class="story-item flex flex-col items-center gap-2 cursor-pointer shrink-0" onclick="filterFeed('Tradicional')">
-                <div class="story-ring w-16 h-16"><img src="https://images.unsplash.com/photo-1611501275019-9b5cda994e8d?q=80&w=200" class="w-full h-full object-cover rounded-full border-2 border-black"></div>
-                <span class="text-[9px] font-bold uppercase tracking-widest opacity-60">Classic</span>
-            </div>
-        </section>
-
-        <!-- Grid Feed -->
-        <section id="feed" class="grid grid-cols-1 md:grid-cols-3 gap-1 mb-32 reveal" style="transition-delay: 400ms;">
-            <!-- Renderizado por JS -->
-        </section>
-
-        <!-- Contacto Form -->
-        <section id="contacto" class="max-w-2xl mx-auto py-20 reveal">
-            <div class="glass-card p-10 md:p-16 rounded-3xl text-center">
-                <h3 class="font-serif-bold text-4xl mb-4 italic text-[#c5a059]">¿Quieres una pieza única?</h3>
-                <p class="text-xs font-tech uppercase tracking-widest text-zinc-500 mb-12 italic">Consulta disponibilidad vía WhatsApp</p>
-                
-                <form id="social-form" class="space-y-8">
-                    <input type="text" id="name" placeholder="Tu nombre" class="w-full bg-transparent border-b border-white/10 p-3 outline-none focus:border-[#c5a059] transition-all" required>
-                    <select id="style" class="w-full bg-transparent border-b border-white/10 p-3 outline-none focus:border-[#c5a059] transition-all">
-                        <option value="Realismo">Realismo</option>
-                        <option value="Fine Line">Fine Line</option>
-                        <option value="Tradicional">Tradicional</option>
-                    </select>
-                    <textarea id="idea" placeholder="Cuéntanos tu idea brevemente..." class="w-full bg-transparent border-b border-white/10 p-3 outline-none focus:border-[#c5a059] transition-all min-h-[100px]" required></textarea>
-                    <button type="submit" class="w-full bg-white text-black py-4 font-bold uppercase tracking-widest text-xs rounded-xl hover:bg-[#c5a059] transition-colors">Enviar Solicitud</button>
                 </form>
             </div>
         </section>
 
     </main>
 
-    <footer class="py-20 border-t border-white/5 bg-black text-center text-[9px] uppercase tracking-[0.5em] opacity-30 font-tech">
-        © 2024 MARCOS TATTOO STUDIO | MADRID SPAIN
+    <!-- Footer -->
+    <footer class="py-24 border-t border-white/5 bg-[#0a0a0a] text-center">
+        <div class="flex justify-center gap-12 mb-12 opacity-50">
+            <a href="#" class="hover:text-[#c5a059] transition-colors">INSTAGRAM</a>
+            <a href="#" class="hover:text-[#c5a059] transition-colors">FACEBOOK</a>
+            <a href="#" class="hover:text-[#c5a059] transition-colors">TIKTOK</a>
+        </div>
+        <p class="text-[9px] uppercase tracking-[0.6em] opacity-20">© 2024 Arte & Tinta Studio | Calle de la Tinta 42, Madrid</p>
     </footer>
 
-    <!-- Modal de Comentarios -->
-    <div id="comment-modal" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl hidden flex items-center justify-center p-6">
-        <div class="glass-card max-w-lg w-full p-8 rounded-2xl relative">
-            <button onclick="closeModal()" class="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors">✕</button>
-            <h4 class="font-serif-bold text-2xl text-[#c5a059] mb-6">Comentarios</h4>
-            <div id="comment-list" class="space-y-4 max-h-64 overflow-y-auto mb-8 pr-4 custom-scrollbar italic text-zinc-400 text-sm">
-                <!-- Dinámico -->
-            </div>
-            <div class="flex gap-4">
-                <input type="text" id="comment-input" placeholder="Añadir comentario..." class="flex-1 bg-transparent border-b border-white/10 py-2 outline-none text-sm">
-                <button onclick="postComment()" class="text-[#c5a059] font-bold text-xs uppercase tracking-widest">Post</button>
-            </div>
-        </div>
-    </div>
-
+    <!-- Script Principal -->
     <script src="index.js"></script>
 </body>
 </html>

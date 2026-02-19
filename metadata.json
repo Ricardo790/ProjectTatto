@@ -1,7 +1,5 @@
 {
-  "name": "Ink Master Studio",
-  "description": "A professional tattoo studio portfolio and client engagement platform featuring AI-powered tattoo consultations, work galleries, and community reviews.",
-  "requestFramePermissions": [
-    "camera"
-  ]
+  "name": "Arte & Tinta Studio",
+  "description": "Portafolio profesional de tatuajes con sistema de citas y reseñas.",
+  "requestFramePermissions": []
 }
