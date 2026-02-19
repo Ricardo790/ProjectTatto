@@ -22,23 +22,26 @@
             line-height: 1.6;
             margin: 0;
         }
-        .font-serif-bold {
-            font-family: 'Playfair Display', serif;
-            font-weight: 900;
-        }
-        .font-tech {
+        /* Fallback: si React no carga, al menos mostramos un mensaje */
+        #root:empty::before {
+            content: 'Cargando aplicación...';
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             font-family: 'Space Mono', monospace;
+            color: var(--gold);
+            font-size: 14px;
+            letter-spacing: 0.2em;
         }
-        .border-ornamental {
-            border: 1px solid rgba(197, 160, 89, 0.2);
-            position: relative;
+        .reveal {
+          opacity: 0;
+          transform: translateY(20px);
+          transition: all 0.6s ease-out;
         }
-        .border-ornamental::before {
-            content: '';
-            position: absolute;
-            top: 5px; left: 5px; right: 5px; bottom: 5px;
-            border: 1px solid rgba(197, 160, 89, 0.1);
-            pointer-events: none;
+        .reveal.active {
+          opacity: 1;
+          transform: translateY(0);
         }
         .btn-wine {
             background-color: var(--wine);
@@ -50,97 +53,53 @@
             background-color: var(--wine-light);
             transform: translateY(-2px);
         }
-        .nav-link {
-            position: relative;
-            transition: color 0.3s ease;
-        }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 1px;
-            bottom: -2px;
-            left: 0;
-            background-color: var(--gold);
-            transition: width 0.3s ease;
-        }
-        .nav-link:hover::after {
-            width: 100%;
-        }
-        .card-shadow {
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0a0a0a;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--wine);
-        }
-        /* Elementos ocultos por defecto para la animación */
-        .reveal {
-          opacity: 0;
-          transform: translateY(20px);
-          transition: all 0.6s ease-out;
-        }
-        /* Clase que activa la visibilidad */
-        .reveal.active {
-          opacity: 1;
-          transform: translateY(0);
-        }
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: var(--gold);
-          border-radius: 10px;
-        }
+        .font-serif-bold { font-family: 'Playfair Display', serif; font-weight: 900; }
+        .font-tech { font-family: 'Space Mono', monospace; }
+        .nav-link { position: relative; transition: color 0.3s ease; }
+        .nav-link::after { content: ''; position: absolute; width: 0; height: 1px; bottom: -2px; left: 0; background-color: var(--gold); transition: width 0.3s ease; }
+        .nav-link:hover::after { width: 100%; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
     </style>
 <script type="importmap">
 {
   "imports": {
-    "react/": "https://esm.sh/react@^19.2.4/",
-    "react": "https://esm.sh/react@^19.2.4",
+    "react": "https://esm.sh/react@19.2.4",
+    "react-dom": "https://esm.sh/react-dom@19.2.4",
+    "react-dom/client": "https://esm.sh/react-dom@19.2.4/client",
+    "@google/genai": "https://esm.sh/@google/genai@1.41.0",
+    "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@2",
     "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "@google/genai": "https://esm.sh/@google/genai@^1.41.0",
-    "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@2"
+    "react/": "https://esm.sh/react@^19.2.4/"
   }
 }
 </script>
 </head>
 <body>
     <div id="root"></div>
+    <!-- Usamos .js en lugar de .tsx para entornos de producción estáticos si no hay build step, 
+         pero el estándar de este proyecto asume que un bundler lo maneja. -->
+    <script type="module" src="index.tsx"></script>
+    
     <script>
-      // Función mejorada para activar animaciones
       function handleReveal() {
         const reveals = document.querySelectorAll('.reveal');
         reveals.forEach(reveal => {
           const windowHeight = window.innerHeight;
           const revealTop = reveal.getBoundingClientRect().top;
-          const revealPoint = 50; // margen para activar
-
-          if (revealTop < windowHeight - revealPoint) {
+          if (revealTop < windowHeight - 50) {
             reveal.classList.add('active');
           }
         });
       }
-
-      // Eventos de activación
       window.addEventListener('scroll', handleReveal);
       window.addEventListener('load', handleReveal);
-      
-      // Observador para detectar cambios en el DOM (importante para React)
-      const observer = new MutationObserver(() => {
-        handleReveal();
-      });
+      const observer = new MutationObserver(() => handleReveal());
       observer.observe(document.body, { childList: true, subtree: true });
-
-      // Ejecución inicial forzada
-      handleReveal();
-      // Pequeño retraso extra por si el renderizado de React es lento
-      setTimeout(handleReveal, 500);
+      // Forzar visibilidad después de 3 segundos por si algo falla
+      setTimeout(() => {
+        document.querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
+      }, 3000);
     </script>
 </body>
 </html>

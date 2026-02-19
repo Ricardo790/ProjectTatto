@@ -2,6 +2,9 @@
 import React from 'react';
 import Gallery from './components/Gallery';
 import Contact from './components/Contact';
+import InkConsultant from './components/InkConsultant';
+import Portfolio from './components/Portfolio';
+import Reviews from './components/Reviews';
 
 const Navbar: React.FC = () => (
   <nav className="fixed top-0 left-0 w-full z-50 bg-[#0a0a0a]/95 border-b border-[#c5a059]/20 px-6 py-4 backdrop-blur-sm">
@@ -12,6 +15,8 @@ const Navbar: React.FC = () => (
       </div>
       <div className="flex flex-wrap justify-center gap-8 font-serif-bold text-[10px] uppercase tracking-widest">
         <a href="#inicio" className="nav-link text-white/80 hover:text-[#c5a059]">Inicio</a>
+        <a href="#ai-consultant" className="nav-link text-white/80 hover:text-[#c5a059]">IA_Consultor</a>
+        <a href="#portfolio" className="nav-link text-white/80 hover:text-[#c5a059]">Portfolio</a>
         <a href="#galeria" className="nav-link text-white/80 hover:text-[#c5a059]">Galería</a>
         <a href="#contacto" className="nav-link text-white/80 hover:text-[#c5a059]">Contacto</a>
       </div>
@@ -39,7 +44,7 @@ const Hero: React.FC = () => (
         El Arte de la <br /><span className="text-[#c5a059] not-italic">Piel.</span>
       </h2>
       <p className="text-lg md:text-2xl font-light italic text-zinc-400 mb-12 max-w-2xl mx-auto reveal" style={{ transitionDelay: '400ms' }}>
-        Donde cada línea cuenta una historia eterna. Especialistas en realismo y trazo fino en el corazón de la ciudad.
+        Don de cada línea cuenta una historia eterna. Especialistas en realismo y trazo fino en el corazón de la ciudad.
       </p>
       <div className="flex flex-col sm:flex-row gap-6 justify-center reveal" style={{ transitionDelay: '600ms' }}>
         <a href="#galeria" className="btn-wine px-14 py-5 font-serif-bold tracking-[0.3em] uppercase text-xs shadow-xl">
@@ -50,10 +55,6 @@ const Hero: React.FC = () => (
         </a>
       </div>
     </div>
-    
-    <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-30">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
-    </div>
   </header>
 );
 
@@ -62,8 +63,11 @@ const App: React.FC = () => {
     <div className="min-h-screen selection:bg-[#c5a059] selection:text-black bg-[#0f0f0f] text-[#e5e1d8]">
       <Navbar />
       <Hero />
-      <main>
+      <main className="max-w-7xl mx-auto px-6">
+        <InkConsultant />
+        <Portfolio />
         <Gallery />
+        <Reviews />
         <Contact />
       </main>
       
